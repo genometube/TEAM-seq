@@ -63,20 +63,16 @@ bin_num <- 249250621/2000000 #根据chr1的长度计算应该划多少个bin
 bin_num <- 191154276/2000000 #根据chr4的长度计算应该划多少个bin
 #bin_num <- 180915260/100000 #根据chr5的长度计算应该划多少个bin
 #100pg测到的CG/CH/CHH位点，划bin，计算每个bin的平均甲基化率
-#df_4a <- data.table(chr=A1$chr,pos=A1$pos,Ctype=A1$Ctype,coverage=A1$mc+A1$nmc,ratio=A1$mc/(A1$mc+A1$nmc)) %>%
+df_4a <- data.table(chr=A1$chr,pos=A1$pos,Ctype=A1$Ctype,coverage=A1$mc+A1$nmc,ratio=A1$mc/(A1$mc+A1$nmc)) %>%
   #filter(chr=="chr4")  %>% filter(Ctype=="CHG") %>% filter(coverage>3)
 df4_a1 <- data.table(chr=df4_a$chr,pos=df4_a$pos,Ctype=df4_a$Ctype,coverage=df4_a$coverage,ratio=df4_a$mc/df4_a$coverage) %>%
   filter(coverage>=3) %>% filter(Ctype=="CHH")
-  
 p_A1 <- df4_a1 %>% mutate(bin=cut(pos,breaks=c(0:bin_num)*2000000)) %>%
   group_by(bin) %>% summarise(mean_ratio=mean(ratio*100)) %>% mutate(chr4=c(0:114))#mutate(chr4=c(0:floor(bin_num)))
 
-#df_4b <- data.table(chr=B1$chr,pos=B1$pos,Ctype=B1$Ctype,coverage=B1$mc+B1$nmc,ratio=B1$mc/(B1$mc+B1$nmc)) %>% 
- # filter(chr=="chr4") %>% filter(coverage>3) %>% filter(Ctype=="CHG")
-df4_b1<- data.table(chr=df4$chr,pos=df4$pos,Ctype=df4$Ctype,coverage=df4$coverage,ratio=df4$mc/df4$coverage) %>%
-  filter(coverage>=3) #%>% filter(Ctype=="CHH")#chr4
-
-#df4_b1<- data.table(chr=df1$chr,pos=df1$pos,Ctype=df1$Ctype,coverage=df1$coverage,ratio=df1$mc/df1$coverage) %>%
+df1 <- data.table(chr=B1$chr,pos=B1$pos,Ctype=B1$Ctype,coverage=B1$mc+B1$nmc,ratio=B1$mc/(B1$mc+B1$nmc)) %>% 
+  filter(chr=="chr1") %>% filter(coverage>3) %>% filter(Ctype=="CHG")
+df4_b1<- data.table(chr=df1$chr,pos=df1$pos,Ctype=df1$Ctype,coverage=df1$coverage,ratio=df1$mc/df1$coverage) %>%
   filter(coverage>=3) %>% filter(Ctype=="CHH")#chr1
 p_B1 <- df4_b1 %>% mutate(bin=cut(pos,breaks=c(0:bin_num)*2000000)) %>%
   group_by(bin) %>% summarise(mean_ratio=mean(ratio*100)) %>% mutate(chr4=c(0:114)) #mutate(chr4=c(0:floor(bin_num)),na.rm=FALSE)
@@ -226,11 +222,8 @@ df <- data.frame(seq=c(rep("TEAM-seq_100pg",10),rep("TEAM-seq_20pg",10),rep("WGB
 
 ####### chromosone C information #############################
 P_A1 <- data.table(chr=A1$chr,Ctype=A1$Ctype) #%>% filter(Ctype=="CG")####ctype来计算total C/CG/CHG/CHH
-P_A11 <- data.table(chr=A11$chr,Ctype=A11$Ctype)#%>% filter(Ctype=="CG")
 table(P_A1$chr)
 P_A1_1<- data.table(chr=P_A1$chr,Ctype=P_A1$Ctype) %>% filter(Ctype=="CHH")
-P_A11_1<- data.table(chr=P_A11$chr,Ctype=P_A11$Ctype)%>% filter(Ctype=="CHG")
-table(P_A1_1$chr)
 table(P_A11_1$chr)
 
 P_B1 <- data.table(chr=B1$chr,Ctype=B1$Ctype) %>% filter(Ctype=="CHH") 
@@ -240,7 +233,6 @@ table(P_B1$chr)
 p_A1 <- data.table(element=A1$`3-UTR`,Ctype=A1$Ctype) %>%
   filter(element > 0)
 table(p_A1$Ctype)
-
 
 p_B1 <- data.table(element=B1$`3-UTR`,
                    Ctype=B1$Ctype) %>%
