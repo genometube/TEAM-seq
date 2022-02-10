@@ -148,32 +148,6 @@ p_B3 <- df_B3 %>% mutate(bin=cut(pos,breaks=c(0:bin_num)*2000000)) %>%
   group_by(bin) %>% summarise(mean_ratio=mean(ratio*100)) %>% mutate(chr4=c(0:94))
 
 
-########## CpG coverage vs Number of CpGs plot ########## 
-#LIANTI在每个深度下测到C位点的个数
-p_A1 <- data.table(Ctype=A1$Ctype,depth=A1$allc) %>% 
-  #filter(Ctype=="CG") %>% #只看CG/CHG/CHH位点,注释掉本行看all C位点
-  group_by(depth)
-p_B1 <- data.table(Ctype=B1$Ctype,depth=B1$allc) %>% 
-  #filter(Ctype=="CG") %>% #只看CG/CHG/CHH位点,注释掉本行看all C位点
-  group_by(depth)
-
-#其他技术在每个深度下测到C位点的个数
-p_B1 <- data.table(Ctype=B1$Ctype,depth=B1$mc+B1$nmc) %>% 
-  #filter(Ctype=="CHH") %>% #只看CG/CHG/CHH位点,注释掉本行看all C位点
-  group_by(depth)
-p_C1 <- data.table(Ctype=C1$Ctype,depth=C1$mc+C1$nmc) %>% 
-  filter(Ctype=="CHG") %>% #只看CG/CHG/CHH位点,注释掉本行看all C位点
-  group_by(depth)
-
-aa=table(p_A1$depth)
-nam=rownames(aa)
-num=as.numeric(aa)
-final=as.data.frame(cbind(nam,num),stringAsFactor=F)
-p_A1=final[c(1:30),]
-p_A1$num=as.numeric(p_A1$num)
-
-
-
 ######################### gene element###################
 p_A1 <- data.table(element=A1$`3-UTR`,Ctype=A1$Ctype) %>%
   filter(element > 0)
