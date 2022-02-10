@@ -1,8 +1,8 @@
 #!/bin/env python
 
 '''
-input----- all cpg island franking region 50 window depth
-out------- 50 window average depth
+input----- all cpg island and franking region window depth
+out------- 20/50 window average depth
 
 '''
 
@@ -12,7 +12,7 @@ import sys
 out=open(sys.argv[2],'w')
 win={}
 
-for i in range(50):
+for i in range(sys.argv[3]):
 	key=i+1
 	win.setdefault(key,[0,0])
 
