@@ -17,8 +17,6 @@ for i in range(int(sys.argv[3])):
 	win.setdefault(key,[0,0])
 
 
-#print (win)
-time=0
 for line in open(sys.argv[1],'r'):
 	aa=line[:-1].split('\t')
 	num=int(aa[3])
@@ -31,8 +29,7 @@ for line in open(sys.argv[1],'r'):
 
 for key in win:
 	out.write('\t'.join([str(key),str(win[key][0]),str(win[key][1]),str(win[key][0]/win[key][1])])+'\n')
-
-#	print(key,win[key]/time)	
+	
 
 
 out.close()
