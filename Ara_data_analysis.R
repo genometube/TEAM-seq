@@ -7,23 +7,23 @@ setwd("C:/Users/fangyitong/Desktop/2021Research/LIANTI/tables")
 ########## Prepare files ########## 
 BS <- fread("Ara_BS.csv.gz",header=TRUE,sep="\t")
 EM <- fread("Ara_EM.csv.gz",header=TRUE,sep="\t")
-#°Ñ¹¦ÄÜÔª¼ş¸Ä³É0£¨Èç¹û¸ÃÎ»µã²»ÊÇÄ³¹¦ÄÜÔª¼ş£©ºÍ1
+#æŠŠåŠŸèƒ½å…ƒä»¶æ”¹æˆ0ï¼ˆå¦‚æœè¯¥ä½ç‚¹ä¸æ˜¯æŸåŠŸèƒ½å…ƒä»¶ï¼‰å’Œ1
 elements <- names(BS)[6:11]
 BS[,(elements) := lapply(.SD, function(x) ifelse(x>0,1,0)), .SDcols=(elements)]
 EM[,(elements) := lapply(.SD, function(x) ifelse(x>0,1,0)), .SDcols=(elements)]
 rm(elements)
 
 ########## Coverage vs Modification plot ########## 
-#BS²âµ½Ã¿¸öCGÎ»µãµÄÉî¶ÈºÍËûÃÇµÄÆ½¾ù¼×»ù»¯ÂÊ
+#BSæµ‹åˆ°æ¯ä¸ªCGä½ç‚¹çš„æ·±åº¦å’Œä»–ä»¬çš„å¹³å‡ç”²åŸºåŒ–ç‡
 p_BS <- data.table(Ctype=BS$Ctype,depth=BS$mc+BS$nmc,ratio=BS$mc/(BS$mc+BS$nmc)) %>% 
   filter(Ctype=="CG") %>% group_by(depth) %>% summarise(mean_ratio=mean(ratio*100))
-#EM²âµ½Ã¿¸öCGÎ»µãµÄÉî¶ÈºÍËûÃÇµÄÆ½¾ù¼×»ù»¯ÂÊ
+#EMæµ‹åˆ°æ¯ä¸ªCGä½ç‚¹çš„æ·±åº¦å’Œä»–ä»¬çš„å¹³å‡ç”²åŸºåŒ–ç‡
 p_EM <- data.table(Ctype=EM$Ctype,depth=EM$mc+EM$nmc,ratio=EM$mc/(EM$mc+EM$nmc)) %>% 
   filter(Ctype=="CG") %>% group_by(depth) %>% summarise(mean_ratio=mean(ratio*100))
-#»­Í¼
-ggplot(p_BS,mapping=aes(x=depth,y=mean_ratio)) + #»­BS
-  geom_point(aes(colour="BS"),size=0.9) + #»­BS 
-  geom_point(p_EM,mapping=aes(x=depth,y=mean_ratio,colour="EM"),size=0.9) + #»­EM
+#ç”»å›¾
+ggplot(p_BS,mapping=aes(x=depth,y=mean_ratio)) + #ç”»BS
+  geom_point(aes(colour="BS"),size=0.9) + #ç”»BS 
+  geom_point(p_EM,mapping=aes(x=depth,y=mean_ratio,colour="EM"),size=0.9) + #ç”»EM
   xlim(0,80) + 
   xlab("Coverage (CG)") +
   ylab("Methylation ratio (%)") +
@@ -35,28 +35,27 @@ ggplot(p_BS,mapping=aes(x=depth,y=mean_ratio)) + #»­BS
         legend.title=element_blank(),
         legend.key=element_blank(),
         axis.line=element_line(colour="black"))
-#ÏÂÔØÍ¼Æ¬µÄÊ±ºò³¤=500¿í=400
 
 ########## Chromosome vs modification plot ########## 
-#bin_num <- 30427671/100000 #¸ù¾İchr1µÄ³¤¶È¼ÆËãÓ¦¸Ã»®¶àÉÙ¸öbin
-#bin_num <- 19698289/100000 #¸ù¾İchr2µÄ³¤¶È¼ÆËãÓ¦¸Ã»®¶àÉÙ¸öbin
-#bin_num <- 23459830/100000 #¸ù¾İchr3µÄ³¤¶È¼ÆËãÓ¦¸Ã»®¶àÉÙ¸öbin
-bin_num <- 18585056/100000 #¸ù¾İchr4µÄ³¤¶È¼ÆËãÓ¦¸Ã»®¶àÉÙ¸öbin
-#bin_num <- 26975502/100000 #¸ù¾İchr5µÄ³¤¶È¼ÆËãÓ¦¸Ã»®¶àÉÙ¸öbin
-#BS²âµ½µÄCG/CH/CHHÎ»µã£¬»®bin£¬¼ÆËãÃ¿¸öbinµÄÆ½¾ù¼×»ù»¯ÂÊ
+#bin_num <- 30427671/100000 #æ ¹æ®chr1çš„é•¿åº¦è®¡ç®—åº”è¯¥åˆ’å¤šå°‘ä¸ªbin
+#bin_num <- 19698289/100000 #æ ¹æ®chr2çš„é•¿åº¦è®¡ç®—åº”è¯¥åˆ’å¤šå°‘ä¸ªbin
+#bin_num <- 23459830/100000 #æ ¹æ®chr3çš„é•¿åº¦è®¡ç®—åº”è¯¥åˆ’å¤šå°‘ä¸ªbin
+bin_num <- 18585056/100000 #æ ¹æ®chr4çš„é•¿åº¦è®¡ç®—åº”è¯¥åˆ’å¤šå°‘ä¸ªbin
+#bin_num <- 26975502/100000 #æ ¹æ®chr5çš„é•¿åº¦è®¡ç®—åº”è¯¥åˆ’å¤šå°‘ä¸ªbin
+#BSæµ‹åˆ°çš„CG/CH/CHHä½ç‚¹ï¼Œåˆ’binï¼Œè®¡ç®—æ¯ä¸ªbinçš„å¹³å‡ç”²åŸºåŒ–ç‡
 df <- data.table(chr=BS$chr,pos=BS$pos,Ctype=BS$Ctype,coverage=BS$mc+BS$nmc,ratio=BS$mc/(BS$mc+BS$nmc)) %>%
   filter(chr=="Chr4") %>% filter(coverage>3) %>% filter(Ctype=="CHG")
 p_BS <- df %>% mutate(bin=cut(pos,breaks=c(0:bin_num)*100000)) %>%
   group_by(bin) %>% summarise(mean_ratio=mean(ratio*100)) %>% mutate(chr4=c(0:floor(bin_num)))
-#EM²âµ½µÄCG/CH/CHHÎ»µã£¬»®bin£¬¼ÆËãÃ¿¸öbinµÄÆ½¾ù¼×»ù»¯ÂÊ
+#EMæµ‹åˆ°çš„CG/CH/CHHä½ç‚¹ï¼Œåˆ’binï¼Œè®¡ç®—æ¯ä¸ªbinçš„å¹³å‡ç”²åŸºåŒ–ç‡
 df <- data.table(chr=EM$chr,pos=EM$pos,Ctype=EM$Ctype,coverage=EM$mc+EM$nmc,ratio=EM$mc/(EM$mc+EM$nmc)) %>% 
   filter(chr=="Chr4") %>% filter(coverage>3) %>% filter(Ctype=="CHG")
 p_EM <- df %>% mutate(bin=cut(pos,breaks=c(0:bin_num)*100000)) %>%
   group_by(bin) %>% summarise(mean_ratio=mean(ratio*100)) %>% mutate(chr4=c(0:floor(bin_num)))
-#»­Í¼
-ggplot(p_BS,mapping=aes(x=chr4,y=mean_ratio)) + #»­BS
-  geom_line(aes(colour="BS")) + #»­BS 
-  geom_line(p_EM,mapping=aes(x=chr4,y=mean_ratio,colour="EM")) + #»­EM
+#ç”»å›¾
+ggplot(p_BS,mapping=aes(x=chr4,y=mean_ratio)) + #ç”»BS
+  geom_line(aes(colour="BS")) + #ç”»BS 
+  geom_line(p_EM,mapping=aes(x=chr4,y=mean_ratio,colour="EM")) + #ç”»EM
   xlab("Chr4") +
   ylab("Methylation ratio (%)") +
   theme(panel.background=element_blank(),
@@ -71,28 +70,27 @@ ggplot(p_BS,mapping=aes(x=chr4,y=mean_ratio)) + #»­BS
         axis.ticks.x=element_blank())
 ##Repeat for CG,CHG,CHH
 ##Repeat for Chr1,2,3,4,5
-#ÏÂÔØÍ¼Æ¬µÄÊ±ºò³¤=500¿í=400
 
 ########## Chromosome vs coverage plot ########## 
-#bin_num <- 30427671/100000 #¸ù¾İchr1µÄ³¤¶È¼ÆËãÓ¦¸Ã»®¶àÉÙ¸öbin
-#bin_num <- 19698289/100000 #¸ù¾İchr2µÄ³¤¶È¼ÆËãÓ¦¸Ã»®¶àÉÙ¸öbin
-#bin_num <- 23459830/100000 #¸ù¾İchr3µÄ³¤¶È¼ÆËãÓ¦¸Ã»®¶àÉÙ¸öbin
-bin_num <- 18585056/100000 #¸ù¾İchr4µÄ³¤¶È¼ÆËãÓ¦¸Ã»®¶àÉÙ¸öbin
-#bin_num <- 26975502/100000 #¸ù¾İchr5µÄ³¤¶È¼ÆËãÓ¦¸Ã»®¶àÉÙ¸öbin
-#BS²âµ½µÄCG/CH/CHHÎ»µã£¬»®bin£¬¼ÆËãÃ¿¸öbinµÄÆ½¾ù¸²¸ÇÉî¶È
+#bin_num <- 30427671/100000 #æ ¹æ®chr1çš„é•¿åº¦è®¡ç®—åº”è¯¥åˆ’å¤šå°‘ä¸ªbin
+#bin_num <- 19698289/100000 #æ ¹æ®chr2çš„é•¿åº¦è®¡ç®—åº”è¯¥åˆ’å¤šå°‘ä¸ªbin
+#bin_num <- 23459830/100000 #æ ¹æ®chr3çš„é•¿åº¦è®¡ç®—åº”è¯¥åˆ’å¤šå°‘ä¸ªbin
+bin_num <- 18585056/100000 #æ ¹æ®chr4çš„é•¿åº¦è®¡ç®—åº”è¯¥åˆ’å¤šå°‘ä¸ªbin
+#bin_num <- 26975502/100000 #æ ¹æ®chr5çš„é•¿åº¦è®¡ç®—åº”è¯¥åˆ’å¤šå°‘ä¸ªbin
+#BSæµ‹åˆ°çš„CG/CH/CHHä½ç‚¹ï¼Œåˆ’binï¼Œè®¡ç®—æ¯ä¸ªbinçš„å¹³å‡è¦†ç›–æ·±åº¦
 df <- data.table(chr=BS$chr,pos=BS$pos,Ctype=BS$Ctype,coverage=BS$mc+BS$nmc) %>%
   filter(chr=="Chr4") %>% filter(Ctype=="CHG")
 p_BS <- df %>% mutate(bin=cut(pos,breaks=c(0:bin_num)*100000)) %>%
   group_by(bin) %>% summarise(mean_coverage=mean(coverage)) %>% mutate(chr4=c(0:floor(bin_num)))
-#EM²âµ½µÄCG/CH/CHHÎ»µã£¬»®bin£¬¼ÆËãÃ¿¸öbinµÄÆ½¾ù¸²¸ÇÉî¶È
+#EMæµ‹åˆ°çš„CG/CH/CHHä½ç‚¹ï¼Œåˆ’binï¼Œè®¡ç®—æ¯ä¸ªbinçš„å¹³å‡è¦†ç›–æ·±åº¦
 df <- data.table(chr=EM$chr,Ctype=EM$Ctype,pos=EM$pos,coverage=EM$mc+EM$nmc,ratio=EM$mc/(EM$mc+EM$nmc)) %>% 
   filter(chr=="Chr4") %>% filter(Ctype=="CHG")
 p_EM <- df %>% mutate(bin=cut(pos,breaks=c(0:bin_num)*100000)) %>%
   group_by(bin) %>% summarise(mean_coverage=mean(coverage)) %>% mutate(chr4=c(0:floor(bin_num)))
-#»­Í¼
-ggplot(p_BS,mapping=aes(x=chr4,y=mean_coverage)) + #»­BS
-  geom_line(aes(colour="BS")) + #»­BS 
-  geom_line(p_EM,mapping=aes(x=chr4,y=mean_coverage,colour="EM")) + #»­EM
+#ç”»å›¾
+ggplot(p_BS,mapping=aes(x=chr4,y=mean_coverage)) + #ç”»BS
+  geom_line(aes(colour="BS")) + #ç”»BS 
+  geom_line(p_EM,mapping=aes(x=chr4,y=mean_coverage,colour="EM")) + #ç”»EM
   xlab("Chr4") +
   ylab("Coverage") +
   theme(panel.background=element_blank(),
@@ -107,26 +105,26 @@ ggplot(p_BS,mapping=aes(x=chr4,y=mean_coverage)) + #»­BS
         axis.ticks.x=element_blank())
 ##Repeat for CG,CHG,CHH
 ##Repeat for Chr1,2,3,4,5
-#ÏÂÔØÍ¼Æ¬µÄÊ±ºò³¤=500¿í=400
+#ä¸‹è½½å›¾ç‰‡çš„æ—¶å€™é•¿=500å®½=400
 
 
 ########## CpG coverage vs Number of CpGs plot ########## 
-#BSÔÚÃ¿¸öÉî¶ÈÏÂ²âµ½CÎ»µãµÄ¸öÊı
+#BSåœ¨æ¯ä¸ªæ·±åº¦ä¸‹æµ‹åˆ°Cä½ç‚¹çš„ä¸ªæ•°
 p_BS <- data.table(Ctype=BS$Ctype,depth=BS$mc+BS$nmc) %>% 
-  filter(Ctype=="CHH") %>% #Ö»¿´CG/CHG/CHHÎ»µã,×¢ÊÍµô±¾ĞĞ¿´all CÎ»µã
+  filter(Ctype=="CHH") %>% #åªçœ‹CG/CHG/CHHä½ç‚¹,æ³¨é‡Šæ‰æœ¬è¡Œçœ‹all Cä½ç‚¹
   group_by(depth)
-#EMÔÚÃ¿¸öÉî¶ÈÏÂ²âµ½CÎ»µãµÄ¸öÊı
+#EMåœ¨æ¯ä¸ªæ·±åº¦ä¸‹æµ‹åˆ°Cä½ç‚¹çš„ä¸ªæ•°
 p_EM <- data.table(Ctype=EM$Ctype,depth=EM$mc+EM$nmc) %>% 
-  filter(Ctype=="CHH") %>% #Ö»¿´CG/CHG/CHHÎ»µã,×¢ÊÍµô±¾ĞĞ¿´all CÎ»µã
+  filter(Ctype=="CHH") %>% #åªçœ‹CG/CHG/CHHä½ç‚¹,æ³¨é‡Šæ‰æœ¬è¡Œçœ‹all Cä½ç‚¹
   group_by(depth)
 
-ggplot(p_BS,mapping=aes(x=depth,y=stat(count/1000000))) + #×ÃÇé³ıÒÔ10µÄ5´Î·½»òÕß6´Î·½
-  geom_histogram(aes(fill="BS"),alpha=0.5) + #»­BS
-  geom_histogram(p_EM,mapping=aes(x=depth,y=stat(count/1000000),fill="EM"),alpha=0.5) + #×ÃÇé³ıÒÔ10µÄ5´Î·½»òÕß6´Î·½
+ggplot(p_BS,mapping=aes(x=depth,y=stat(count/1000000))) + #é…Œæƒ…é™¤ä»¥10çš„5æ¬¡æ–¹æˆ–è€…6æ¬¡æ–¹
+  geom_histogram(aes(fill="BS"),alpha=0.5) + #ç”»BS
+  geom_histogram(p_EM,mapping=aes(x=depth,y=stat(count/1000000),fill="EM"),alpha=0.5) + #é…Œæƒ…é™¤ä»¥10çš„5æ¬¡æ–¹æˆ–è€…6æ¬¡æ–¹
   xlim(0,100) + 
   scale_x_continuous(expand=c(0,0),limits=c(0,101)) +
-  scale_y_continuous(expand=c(0,0),limits=c(0,NA)) + #limitsÖµ¿ÉÒÔ¸ù¾İÊµ¼ÊÇé¿öµ÷Õû
-  annotate("text",x=3,y=4,label="1e6",size=3.5) + #1e5ºÍ1e6µÄÎ»ÖÃ£¬yÖµ¿ÉÒÔ¸ù¾İÊµ¼ÊÇé¿öµ÷Õû
+  scale_y_continuous(expand=c(0,0),limits=c(0,NA)) + #limitså€¼å¯ä»¥æ ¹æ®å®é™…æƒ…å†µè°ƒæ•´
+  annotate("text",x=3,y=4,label="1e6",size=3.5) + #1e5å’Œ1e6çš„ä½ç½®ï¼Œyå€¼å¯ä»¥æ ¹æ®å®é™…æƒ…å†µè°ƒæ•´
   xlab("Coverage per CHH position") +
   #xlab("Coverage per C") +
   ylab("Number of CHH positions") + 
@@ -146,7 +144,7 @@ ggplot(p_BS,mapping=aes(x=depth,y=stat(count/1000000))) + #×ÃÇé³ıÒÔ10µÄ5´Î·½»òÕß
 ########## Barplot mC ratio of functional elements ########## 
 BS <- read.csv("Ara_BS_Element_mCratio.csv",sep=",",header=T)
 EM <- read.csv("Ara_EM_Element_mCratio.csv",sep=",",header=T)
-##head(BS)ÈçÏÂ:##
+##head(BS)å¦‚ä¸‹:##
 #BS      C     CG    CHG    CHH#
 #5-UTR  6.286  4.862  3.043  7.423#
 #CDS  6.773 19.178  3.966  4.243#
@@ -154,12 +152,12 @@ EM <- read.csv("Ara_EM_Element_mCratio.csv",sep=",",header=T)
 df <- data.frame(seq=c(rep("BS",7),rep("EM",7)),
                  type=c(BS$BS,EM$EM),
                  ratio=c(BS$CHH,EM$CHH))
-##head(df)ÈçÏÂ:##
+##head(df)å¦‚ä¸‹:##
 #seq   type  ratio#
 #BS  5-UTR  7.423#
 #BS    CDS  4.243#
 
-##»­Í¼
+##ç”»å›¾
 ggplot(df,aes(x=type,y=ratio,fill=seq)) +
   geom_bar(stat="identity",color="black",position=position_dodge(),alpha=0.5) +
   ylab("Mean methylation ratio (%)") +
