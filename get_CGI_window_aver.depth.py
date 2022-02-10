@@ -1,7 +1,7 @@
 #!/bin/env python
 
 '''
-input----- all cpg island and franking region window depth
+input----- all CpG island and franking region window depth
 out------- 20/50 window average depth
 
 '''
