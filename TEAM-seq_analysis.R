@@ -262,7 +262,7 @@ plot(aa,col ="DarkCyan",ylab=expression("CGs covered("~"x10"^"6"~")"),
 a=read.table("coveredC_cell.txt",header = T,sep = '\t')
 plot(x=a$merge_cell,y=a$coverage,pch=19,type="o",lwd=2,xlab="Number of combine cells",ylab="Covered C(%)",col='SteelBlue3')
 
-#######  NMF ###########
+#######  NMF test ###########
 library(NMF)
 library(tsne)
 library(doMPI)
