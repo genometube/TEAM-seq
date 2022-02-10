@@ -12,7 +12,7 @@ import sys
 out=open(sys.argv[2],'w')
 win={}
 
-for i in range(sys.argv[3]):
+for i in range(int(sys.argv[3])):
 	key=i+1
 	win.setdefault(key,[0,0])
 
