@@ -7,7 +7,7 @@ echo ========== Forward mapping is done =========
 
 ## Extract unmapped reads
 awk  '{if($2 !=4 ) print $1}' A1_libA_forward_strand_hits.sam |awk -F "\!" '{print $1}'| sort|uniq >A1_libA_forward_strand_hits.sam_1
-awk  '{if($2 !=4 ) print $1}'  A1_libA_reverse_strand_hits.sam |awk -F "\!" '{print $1}'| sort|uniq >A1_libA__reverse_strand_hits.sam_1
+awk  '{if($2 !=4 ) print $1}' A1_libA_reverse_strand_hits.sam |awk -F "\!" '{print $1}'| sort|uniq >A1_libA_reverse_strand_hits.sam_1
 cat A1_libA_forward_strand_hits.sam_1 A1_libA_reverse_strand_hits.sam_1 |sort |uniq >map_ID.txt
 /share/app/seqkit/0.14.0-dev/seqkit grep -v -f  map_ID.txt /zfssz5/BC_RD_P1/PROJECT/P18Z12200N0396_zhangchen3/P18Z12200N0396_zhangchen3/LIANTI/data/A1_B1_B2_B3/LIANTI_A1.reads.fastq.gz |gzip >A1_reads_unmap.fastq.gz
 echo ========== Unmapped reads extracted =========
