@@ -18,11 +18,7 @@ echo ========== Reverse mapping is done =========
 ## Merge forward and reverse
 samtools merge -h A1_processed_reads_no_clonal.bam A1_total.bam A1_processed_reads_no_clonal.bam A1_other_processed_reads_no_clonal.bam
 echo ================ Merge is done =============
-## call methy
+## call methylation
 methylpy call-methylation-state --input-file A1_total.bam --paired-end False --sample A1_total --ref-fasta /zfssz4/BC_RD_P1/PROJECT/P19Z12200N0088_chenwenfang/P19Z12200N0088_chenwenfang/LIANTI_Methy/new_reverse_index/new_ref/hg19_up_ref.fa  --num-procs 8 --num-upstream-bases 1 --keep-temp-files True --remove-chr-prefix False  --unmethylated-control Control: --binom-test True
-
-echo ===`date`===
-
-
 
 echo ===`date`===
