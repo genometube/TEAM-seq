@@ -23,7 +23,7 @@ for line in open(sys.argv[1],'r'):
 	aa=line[:-1].split('\t')
 	num=int(aa[3])
 	if num in win:
-		win[num][0]=win[num][0]+int(aa[-1])/80
+		win[num][0]=win[num][0]+int(aa[-1])/(int(aa[2])-int(aa[1]))
 		win[num][1]=win[num][1]+1
 	
 	else:
